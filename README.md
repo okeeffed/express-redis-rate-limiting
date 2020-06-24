@@ -25,3 +25,13 @@ yarn redis:cli
 ```
 
 ## Checking the rate limiting
+
+```s
+yarn test
+```
+
+## Locally
+
+If limited, expects `Too many requests, please try again later.`.
+
+if successful, expects `RESPONSE_SUCCESS`.
