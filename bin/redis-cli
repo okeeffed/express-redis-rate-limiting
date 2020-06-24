@@ -1,0 +1,3 @@
+#!/bin/bash
+# can only run once redis-start is running
+redis-cli -p 6000

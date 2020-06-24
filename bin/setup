@@ -1,0 +1,4 @@
+#!/bin/bash
+docker pull redis
+yarn add express express-rate-limit rate-limit-redis redis
+yarn add --dev execa jest

@@ -1,0 +1,3 @@
+#!/bin/bash
+docker stop redis-test
+docker rm redis-test
