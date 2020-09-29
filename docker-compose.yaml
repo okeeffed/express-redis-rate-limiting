@@ -1,0 +1,56 @@
+version: "3.3"
+
+services:
+
+  server:
+    build: .
+    image: marcellodesales/rate-limiting-server-redis-client
+    ports:
+      - "8000:8000"
+    environment:
+      - "REDIS_HOST=redis"
+      - "REDIS_PORT=6379"
+      - "SERVER_PORT=8000"
+    networks:
+      - caching
+      - runtime
+
+  redis:
+    image: "redis:6.0.8-alpine"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ./redis-data:/data/
+    networks:
+      - caching
+
+  redis_ui:
+    image: erikdubbelboer/phpredisadmin
+    environment:
+      REDIS_1_HOST: redis
+      REDIS_1_PORT: 6379
+      REDIS_1_NAME: Rate-Limiting
+    ports:
+      - 8080:80
+    networks:
+      - caching
+      - runtime
+
+  tester:
+    build: .
+    image: marcellodesales/rate-limiting-server-redis-client
+    command: ["/wait-for-it.sh", "server:8000", "--", "yarn", "test"]
+    restart: always
+    environment:
+      - "SERVER_HOST=server"
+      - "SERVER_PORT=8000"
+    volumes:
+      # https://github.com/vishnubob/wait-for-it/blob/master/wait-for-it.sh
+      - "./wait-for-it.sh:/wait-for-it.sh"
+    networks:
+      - runtime
+
+networks:
+  caching:
+    name: caching
+  runtime:
+    name: runtime

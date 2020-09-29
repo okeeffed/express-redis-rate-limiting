@@ -2,14 +2,15 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const RedisStore = require('rate-limit-redis');
 const app = express();
-const port = 8080;
+const port = process.env.SERVER_PORT ? process.env.SERVER_PORT : 8080;
 
 const limiter = rateLimit({
   store: new RedisStore({
     expiry: 60 * 15,
     client: require('redis').createClient({
-      // Exposing Docker port on 6000
-      port: 6000,
+        host: process.env.REDIS_HOST, // The hostname of the database you are connecting to.
+        port: process.env.REDIS_PORT, // The port number to connect to.
+     // password: 'redispassword', // The password for redis database.
     }),
   }),
   windowMs: 15 * 60 * 1000, // 15 minutes - only used for MemoryStore, ignored with RedisStore
