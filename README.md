@@ -1,7 +1,16 @@
 # Rate Limiting Express w/ a Redis store
 
+* Initial Blog post at https://medium.com/@dennisokeeffe/the-abcs-of-rate-limiting-expressjs-servers-with-docker-redis-e196aaef82c7
+* Executing the `docker-compose` version you can navigate through the data using the Redis UI.
+
+<img width="578" alt="Screen Shot 2020-09-29 at 2 15 23 AM" src="https://user-images.githubusercontent.com/131457/94517659-c7c79980-01fe-11eb-8282-3c79cecd321b.png">
+
+* You can view the current state of Redis either by inspecting the aof file under `./redis-data`
+* You can also view the current state at the Redis UI at http://localhost:8080
+
 # Resources
 
+0. [redis-rate-limit-best-practices](https://redislabs.com/redis-best-practices/basic-rate-limiting/)
 1. [rate-limit-redis](https://github.com/wyattjoh/rate-limit-redis)
 2. [express-rate-limit](https://github.com/nfriedly/express-rate-limit)
 3. [Redis commands](https://redis.io/commands)
@@ -36,7 +45,7 @@ If limited, expects `Too many requests, please try again later.`.
 
 if successful, expects `RESPONSE_SUCCESS`.
 
-## Dockerized verison
+## docker-compose verison
 
 * Run the following container to get all at once...
 
@@ -144,8 +153,3 @@ tester_1    | Time:        1.569 s
 tester_1    | Ran all test suites.
 tester_1    | Done in 2.34s.
 ```
-
-* You can view the current state of Redis either by inspecting the aof file under `./redis-data`
-* You can also view the current state at the Redis UI at http://localhost:8080
-
-<img width="578" alt="Screen Shot 2020-09-29 at 2 15 23 AM" src="https://user-images.githubusercontent.com/131457/94517659-c7c79980-01fe-11eb-8282-3c79cecd321b.png">
