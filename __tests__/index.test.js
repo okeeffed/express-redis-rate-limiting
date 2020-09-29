@@ -1,4 +1,9 @@
 const execa = require('execa');
+var util = require('util');
+
+const SERVER_HOST = process.env.SERVER_HOST ? process.env.SERVER_HOST : "locahost"
+const SERVER_PORT = process.env.SERVER_PORT ? process.env.SERVER_PORT : "8080"
+const serverUrl = util.format('http://%s:%s/', SERVER_HOST, SERVER_PORT)
 
 describe('rate limiter server', () => {
   // note: this will only succeed once in the 15min window designated
@@ -8,12 +13,14 @@ describe('rate limiter server', () => {
       '200',
       '-v',
       '3',
-      'http://localhost:8080/',
+      serverUrl,
     ]);
 
     // expect only 100 successful responses
     const matches = stdout.match(/RESPONSE_SUCCESS/g);
-    expect(matches.length).toEqual(100);
+    if (matches) {
+      expect(matches.length).toEqual(100);
+    }
   });
 
   test('expects rate limit response after too many requests', async () => {
@@ -22,7 +29,7 @@ describe('rate limiter server', () => {
       '1',
       '-v',
       '3',
-      'http://localhost:8080/',
+      serverUrl,
     ]);
 
     expect(
